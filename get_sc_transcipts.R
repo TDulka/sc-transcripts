@@ -46,8 +46,13 @@ sc_pattern = paste(sc_terms, collapse = "|")
 # plus one sentence before and one sentence after
 extract_relevant_text = function(text, pattern) {
   parts = str_split(text, '\\.')[[1]]
-  first_occ = min(which(grepl(pattern, parts)))
-  last_occ = max(which(grepl(pattern, parts)))
+  matching_indeces = which(grepl(pattern, parts))
+  if (length(matching_indeces) == 0) {
+    return("")
+  }
+  
+  first_occ = min(matching_indeces)
+  last_occ = max(matching_indeces)
   start_index = max(first_occ - 1, 1)
   end_index = min(last_occ + 1, length(parts))
   
@@ -55,12 +60,13 @@ extract_relevant_text = function(text, pattern) {
   
   return(paste(relevant_portion, collapse = "."))
 }
-vec_extract_relevant = Vectorize(extract_relevant_text)
+vec_extract_relevant = Vectorize(extract_relevant_text, USE.NAMES = FALSE)
 
 transcripts_for_analysis = sc_transcripts %>%
+  mutate(componenttext = vec_extract_relevant(componenttext, "supply chain"))
   left_join(transcript_detail) %>%
   filter(keydeveventtypeid == 48) %>%
-  select(headline, mostimportantdateutc, componenttext)
+  select(headline, mostimportantdateutc, componenttext, companyid)
 
 save(transcripts_for_analysis, file="./data/transcripts_for_analysis.RData")
 
