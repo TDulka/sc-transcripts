@@ -1,5 +1,7 @@
 library(lubridate)
 library(ggplot2)
+library(dplyr)
+library(tidyr)
 
 setwd("/Users/Personal/Desktop/MIT/sc-transcripts")
 
