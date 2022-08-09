@@ -1,4 +1,5 @@
 library(lubridate)
+library(ggplot2)
 
 setwd("/Users/Personal/Desktop/MIT/sc-transcripts")
 
@@ -35,14 +36,14 @@ counts_by_date = transcripts %>%
 
 statistics = counts_by_date %>%
   mutate(
-    ratio_robust = n_robust / n_total,
-    ratio_efficient = n_efficient / n_total
+    share_robust = n_robust / n_total,
+    share_efficient = n_efficient / n_total
   ) %>%
-  pivot_longer(cols = c(ratio_robust, ratio_efficient), names_to="ratio")
+  pivot_longer(cols = c(share_robust, share_efficient), names_to="share")
 
-plot <- ggplot() +
-  geom_line(data = statistics, aes(x=date, y=ratio), color = ratio) +
+plot <- ggplot(data = statistics, aes(x=date, y=value, group = share)) +
+  geom_line(aes(color=share)) +
   xlab('Dates') +
   ylab('Share of transcripts')
 
-plot  
+ggsave(filename="ratios.png", path="output/plots")   
