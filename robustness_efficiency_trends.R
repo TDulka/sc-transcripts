@@ -42,7 +42,10 @@ statistics = counts_by_date %>%
   pivot_longer(cols = c(share_robust, share_efficient), names_to="share")
 
 plot <- ggplot(data = statistics, aes(x=date, y=value, group = share)) +
-  geom_line(aes(color=share)) +
+  aes(color=share) + 
+  geom_line() +
+  geom_point(size=1) +
+  expand_limits(y = 0) +
   xlab('Dates') +
   ylab('Share of transcripts')
 
