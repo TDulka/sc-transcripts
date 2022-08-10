@@ -5,11 +5,11 @@ library(tidyr)
 
 setwd("/Users/Personal/Desktop/MIT/sc-transcripts")
 
-# read dictionary
-expanded_dict = read.csv("./input/expanded_dict.csv")
-
 # import transcript data
 load(file="./data/transcripts_for_analysis.RData")
+
+# read dictionary
+expanded_dict = read.csv("./input/expanded_dict.csv")
 
 robustness_terms = expanded_dict$robustness
 efficiency_terms = expanded_dict$efficiency[expanded_dict$efficiency != ""]
