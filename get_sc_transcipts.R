@@ -62,11 +62,14 @@ extract_relevant_text = function(text, pattern) {
 }
 vec_extract_relevant = Vectorize(extract_relevant_text, USE.NAMES = FALSE)
 
-transcripts_for_analysis = sc_transcripts %>%
+transcripts_shortened = sc_transcripts %>%
   mutate(componenttext = vec_extract_relevant(componenttext, "supply chain"))
-  left_join(transcript_detail) %>%
-  filter(keydeveventtypeid == 48) %>%
-  select(headline, mostimportantdateutc, componenttext, companyid)
+
+transcripts_joined = transcripts_shortened %>%
+  left_join(transcript_detail) 
+
+transcripts_for_analysis = transcripts_joined %>%
+  filter(keydeveventtypeid == 48 & componenttext != "") 
 
 save(transcripts_for_analysis, file="./data/transcripts_for_analysis.RData")
 
