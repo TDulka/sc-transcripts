@@ -33,36 +33,6 @@ one_number_scores = scores %>%
 
 scored_transcripts =  transcripts_sample_without_redundant %>% left_join(one_number_scores)
 
-# average_quarter_sentiment = scored_transcripts %>%
-#   select(companyname, date, compound) %>%
-#   group_by(companyname, date) %>%
-#   summarize(sentiment = mean(compound))
-# 
-# planes = average_quarter_sentiment %>%
-#   filter(companyname %in% c("Airbus SE", "The Boeing Company"))
-# 
-# beer = average_quarter_sentiment %>%
-#   filter(companyname %in% c("Molson Coors Beverage Company", "Heineken N.V."))
-# 
-# plotplanes = ggplot(data = planes, aes(x=date, y=sentiment, group = companyname)) +
-#   aes(color=companyname) + 
-#   geom_line() +
-#   geom_point(size=1) +
-#   xlab('Dates') +
-#   ylab('Sentiment scores')
-# 
-# ggsave(filename="sentiment_planes.png", path="output/plots")
-# 
-# plotbeer = ggplot(data = beer, aes(x=date, y=sentiment, group = companyname)) +
-#   aes(color=companyname) + 
-#   geom_line() +
-#   geom_point(size=1) +
-#   xlab('Dates') +
-#   ylab('Sentiment scores') 
-# 
-# ggsave(filename="sentiment_beer.png", path="output/plots")
-
-
 average_aggregate_sentiment_over_time = scored_transcripts %>%
   select(date, compound) %>%
   group_by(date) %>%
