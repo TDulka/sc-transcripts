@@ -28,7 +28,7 @@ counts_by_date = transcripts %>%
   mutate(
     date = floor_date(mostimportantdateutc, unit = "quarter")
   ) %>%
-  filter(date >= "2006-01-01") %>%
+  filter(date >= "2006-01-01") %>% # very few observations before this date
   group_by(date) %>%
   summarize(
     n_total = n(),
@@ -38,9 +38,11 @@ counts_by_date = transcripts %>%
 
 statistics = counts_by_date %>%
   mutate(
+  # calculate shares of supply chain related discussions mentioning robustness / efficiency
     share_robust = n_robust / n_total,
     share_efficient = n_efficient / n_total
   ) %>%
+  # put the scores into one column for easier plotting
   pivot_longer(cols = c(share_robust, share_efficient), names_to="share")
 
 plot <- ggplot(data = statistics, aes(x=date, y=value, group = share)) +
